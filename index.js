@@ -1,9 +1,8 @@
- // Function to update the "Converted Code" textarea with the response or an error message
- function displayResponse(response) {
+// Function to update the "Converted Code" textarea with the response or an error message
+function displayResponse(response) {
   const convertedCodeTextarea = document.getElementById('convertedCode');
   convertedCodeTextarea.value = response;
 }
-
 
 async function convertCode() {
   const languageSelect = document.getElementById('languageSelect');
@@ -11,14 +10,14 @@ async function convertCode() {
   const inputCode = document.getElementById('inputCode').value;
 
   try {
-    const response = await fetch('http://localhost:9090/code/converter', {
+    const response = await fetch('http://localhost:9090/code/convert', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        payload: inputCode,
-        language: selectedLanguage,
+        code: inputCode,
+        lang: selectedLanguage,
       }),
     });
 
@@ -27,11 +26,11 @@ async function convertCode() {
     }
 
     const data = await response.json();
-    const convertedCode = data.textResponse;
+    const convertedCode = data.code;
 
     displayResponse(convertedCode);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -42,13 +41,13 @@ async function debugCode() {
   const inputCode = document.getElementById('inputCode').value;
 
   try {
-    const response = await fetch('http://localhost:9090/code/debugging', {
+    const response = await fetch('http://localhost:9090/code/debug', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        payload: inputCode,
+        code: inputCode,
       }),
     });
 
@@ -57,11 +56,11 @@ async function debugCode() {
     }
 
     const data = await response.json();
-    const debugResponse = data.text;
+    const debugResponse = data.code;
 
     displayResponse(debugResponse);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -72,13 +71,13 @@ async function checkCodeQuality() {
   const inputCode = document.getElementById('inputCode').value;
 
   try {
-    const response = await fetch('http://localhost:9090/code/check', {
+    const response = await fetch('http://localhost:9090/code/quality-checker', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        payload: inputCode,
+        code: inputCode,
       }),
     });
 
@@ -87,11 +86,11 @@ async function checkCodeQuality() {
     }
 
     const data = await response.json();
-    const qualityCheckResponse = data.text;
+    const qualityCheckResponse = data.report;
 
     displayResponse(qualityCheckResponse);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
